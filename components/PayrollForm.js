@@ -5,7 +5,15 @@ import {
   selectHookReg,
 } from '@/src/compFactory'
 import { sumArray } from '@/src/utils'
-import { Box, Stack, HStack, Grid, GridItem, FormLabel } from '@chakra-ui/react'
+import {
+  Box,
+  Stack,
+  HStack,
+  Grid,
+  GridItem,
+  FormLabel,
+  Spinner,
+} from '@chakra-ui/react'
 import { useFormContext, useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -27,31 +35,57 @@ const totalHoursWorked = (arr) =>
 
 export default function PayrollForm({ employee }) {
   const { register, reset } = useFormContext() // fx
-  const { query, push, pathname } = useRouter()
-  const weekStart = query.hasOwnProperty('week')
-    ? query.week
+  const router = useRouter()
+  const weekStart = router.query.week
+    ? router.query.week
     : Object.keys(employee.payroll)[0]
+  // const weekStart = router.query.week
 
-  const employeeWeeks = Object.keys(employee.payroll)
+  const employeeWeeks = weekStart && Object.keys(employee.payroll)
+
+  const gotoWeek = (week) =>
+    router.push({
+      pathname: router.pathname,
+      query:
+        week === '' ? { ...router.query } : { ...router.query, week: week },
+    })
+
+  const clearWeek = () =>
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query },
+    })
 
   useEffect(() => {
     reset()
-  }, [query])
+  }, [router.query])
+
+  useEffect(() => {
+    if (employee.hasOwnProperty('id')) {
+      // !router.query.hasOwnProperty('week') &&
+      //   gotoWeek(Object.keys(employee.payroll)[0])
+      router.query.hasOwnProperty('week') &&
+        gotoWeek(Object.keys(employee.payroll)[0])
+    }
+    // gotoWeek(Object.keys(employee.payroll)[0])
+    // clearWeek()
+  }, [router.isReady, router.query.id])
 
   const payrollComps = (name, defVal, key, type = 'number') =>
     inputHookReg(name, defVal, key, register, type)
+
+  if (!employee || !employee.id) {
+    return <Spinner></Spinner>
+  }
 
   return (
     <Box>
       <Stack>
         <HStack>
           <FormLabel>Week </FormLabel>
-          {selectComp(weekStart, employeeWeeks, (e) => {
-            push({
-              pathname: pathname,
-              query: { ...query, week: e.target.value },
-            })
-          })}
+          {selectComp(weekStart, employeeWeeks, (e) =>
+            gotoWeek(e.target.value)
+          )}
         </HStack>
         <Grid
           templateRows='repeat(4, 1fr)'

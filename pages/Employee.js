@@ -30,7 +30,7 @@ import { useEffect, useState } from 'react'
 import merge from 'deepmerge'
 import localforage from 'localforage'
 import { iconButton, selectComp } from '@/src/compFactory'
-import { seedEmployees } from '../../data/seedData'
+import { seedEmployees } from '../data/seedData'
 import { findNext, findPrev } from '@/src/utils'
 import EmployeeForm from '@/components/EmployeeForm'
 import PayrollForm from '@/components/PayrollForm'
@@ -44,6 +44,13 @@ export default function Employee() {
   const methods = useForm({ employee })
   const router = useRouter()
   const toast = useToast()
+
+  const gotoID = (id) =>
+    router.push({
+      pathname: router.pathname,
+      query: { id: id },
+    })
+  // const id = router.query.hasOwnProperty('id') ? query.id : allKeys[0] && 101
 
   useEffect(() => {
     ;(async () => {
@@ -66,7 +73,14 @@ export default function Employee() {
       return
     }
 
-    localforage.keys().then((x) => setAllKeys(x))
+    localforage
+      .keys()
+      .then((x) => setAllKeys(x))
+      .then(
+        () =>
+          router.query.hasOwnProperty('id') ||
+          gotoID(allKeys ? allKeys[0] : '101')
+      )
     localforage.getItem(router.query.id).then((x) => setEmployee(x))
   }, [router.isReady, router.query.id])
 
@@ -106,6 +120,7 @@ export default function Employee() {
 
   return (
     <Container maxW='container.md'>
+      {console.log(findPrev(allKeys, router.query.id))}
       <Box>
         <FormProvider {...methods}>
           <form>
@@ -121,7 +136,7 @@ export default function Employee() {
                     </Tab>
                   </TabList>
                   {selectComp(String(employee.id), allKeys, (e) =>
-                    router.push(e.target.value)
+                    gotoID(e.target.value)
                   )}
                 </Stack>
               </Center>
@@ -141,11 +156,11 @@ export default function Employee() {
                 {[
                   [
                     FaChevronCircleLeft,
-                    `/employee/${findPrev(allKeys, router.query.id)}`,
+                    `/?id=${findPrev(allKeys, router.query.id)}`,
                   ],
                   [
                     FaChevronCircleRight,
-                    `/employee/${findNext(allKeys, router.query.id)}`,
+                    `/?id=${findNext(allKeys, router.query.id)}`,
                   ],
                   [FaSave, methods.handleSubmit(formSubmit)],
                   [colorMode === 'light' ? FaMoon : FaSun, toggleColorMode],
