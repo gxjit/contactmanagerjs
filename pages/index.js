@@ -7,7 +7,7 @@ import Employee from './Employee'
 const inter = Inter({ subsets: ['latin'] })
 const montserrat = Montserrat({ subsets: ['latin'] })
 
-export default function Home({ employee }) {
+export default function Home() {
   return (
     <>
       <Head>
@@ -15,7 +15,7 @@ export default function Home({ employee }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <main className={styles.main}>
+      <main>
         <Employee></Employee>
       </main>
     </>

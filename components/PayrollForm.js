@@ -88,8 +88,8 @@ export default function PayrollForm({ employee }) {
           )}
         </HStack>
         <Grid
-          templateRows='repeat(4, 1fr)'
-          templateColumns='repeat(2, 1fr)'
+          templateRows={{ sm: 'repeat(8, 1fr)', md: 'repeat(4, 1fr)' }}
+          templateColumns={{ sm: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
           gap={2}
         >
           {inputComp(

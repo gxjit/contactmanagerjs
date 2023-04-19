@@ -16,7 +16,6 @@ import {
 } from '@chakra-ui/react'
 import {
   FaSave,
-  FaSearch,
   FaChevronCircleLeft,
   FaChevronCircleRight,
   FaBusinessTime,
@@ -120,7 +119,6 @@ export default function Employee() {
 
   return (
     <Container maxW='container.md'>
-      {console.log(findPrev(allKeys, router.query.id))}
       <Box>
         <FormProvider {...methods}>
           <form>
