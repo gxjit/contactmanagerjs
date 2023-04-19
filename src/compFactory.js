@@ -6,19 +6,24 @@ import {
   Icon,
   IconButton,
   Select,
+  Text,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
 export const inputComp = (name, val, type = 'text') => (
   <InputGroup key={name}>
-    <InputLeftAddon children={name} />
+    <InputLeftAddon>
+      <Text>{name}</Text>
+    </InputLeftAddon>
     <Input type={type} placeholder={name} defaultValue={val} />
   </InputGroup>
 )
 
 export const inputHookComp = (name, val, hookObj, type = 'text') => (
   <InputGroup key={name}>
-    {name && <InputLeftAddon children={name} />}
+    <InputLeftAddon>
+      <Text>{name}</Text>
+    </InputLeftAddon>
     <Input
       type={type}
       placeholder={name}
