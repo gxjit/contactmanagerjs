@@ -49,7 +49,6 @@ export default function Employee() {
       pathname: router.pathname,
       query: { id: id },
     })
-  // const id = router.query.hasOwnProperty('id') ? query.id : allKeys[0] && 101
 
   useEffect(() => {
     ;(async () => {
@@ -71,6 +70,7 @@ export default function Employee() {
     if (!router.isReady) {
       return
     }
+    // else if (employee.id === router.query.id){}
 
     localforage
       .keys()
@@ -102,19 +102,30 @@ export default function Employee() {
     // console.log(updatedData.payroll)
     await localforage.setItem(String(updatedData.id), updatedData)
     await localforage.getItem(router.query.id).then((x) => setEmployee(x))
-    toast({
-      title: 'Data Updated.',
-      // description: "Data Updated.",
-      status: 'success',
-      position: 'top',
-      duration: 9000,
-      isClosable: true,
-    })
-    // setEmployee(null)
+
+    employee
+      ? toast({
+          title: 'Data Updated.',
+          status: 'success',
+          position: 'top',
+          duration: 2200,
+          isClosable: true,
+        })
+      : toast({
+          title: 'Update Failed.',
+          status: 'error',
+          position: 'top',
+          duration: 2200,
+          isClosable: true,
+        })
   }
 
   if (!employee || !employee.id || !allKeys) {
-    return <Spinner></Spinner>
+    return (
+      <Center w='100%' h='100px'>
+        <Spinner size='xl'></Spinner>
+      </Center>
+    )
   }
 
   return (
@@ -126,10 +137,12 @@ export default function Employee() {
               <Center>
                 <Stack spacing={3}>
                   <TabList>
-                    <Tab>
+                    <Tab
+                    // isSelected={employee.type === 'Salaried'}
+                    >
                       <Icon as={FaUserEdit}></Icon> &nbsp; Employee Contact
                     </Tab>
-                    <Tab>
+                    <Tab isDisabled={employee.type === 'Salaried'}>
                       <Icon as={FaBusinessTime}></Icon> &nbsp; Employee Payroll
                     </Tab>
                   </TabList>

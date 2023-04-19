@@ -13,6 +13,10 @@ import {
   GridItem,
   FormLabel,
   Spinner,
+  Text,
+  Alert,
+  AlertIcon,
+  AlertTitle,
 } from '@chakra-ui/react'
 import { useFormContext, useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
@@ -78,6 +82,17 @@ export default function PayrollForm({ employee }) {
     return <Spinner></Spinner>
   }
 
+  if (!(employee.type === 'Hourly')) {
+    return (
+      <>
+        <Alert status='info'>
+          <AlertIcon />
+          <AlertTitle>N/A for Salaried Employees!</AlertTitle>
+        </Alert>
+      </>
+    )
+  }
+
   return (
     <Box>
       <Stack>
@@ -99,7 +114,11 @@ export default function PayrollForm({ employee }) {
           )}
           {Object.entries(employee.payroll[weekStart]).map(([k, v]) => (
             <GridItem key={k}>
-              {payrollComps(k, v, `payroll.${weekStart}.${k}`)}
+              {payrollComps(
+                `${k.charAt(0).toUpperCase()}${k.slice(1)}`,
+                v,
+                `payroll.${weekStart}.${k}`
+              )}
             </GridItem>
           ))}
         </Grid>
