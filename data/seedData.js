@@ -3,7 +3,7 @@ export const seedEmployees = [
     id: 101,
     jobDescription: 'Chief Executive Officer',
     type: 'Hourly',
-    payRate: 30000,
+    payRate: 60, // Monthly Salary or Hourly Rate
     contact: {
       firstName: 'Sidhu',
       lastName: 'Moosewala',
@@ -18,6 +18,7 @@ export const seedEmployees = [
     },
     payroll: {
       '2023-01-02': {
+        // ISO week start date
         monday: 8,
         tuesday: 7,
         wednesday: 8,
@@ -59,7 +60,7 @@ export const seedEmployees = [
     id: 102,
     jobDescription: 'Chief Technology Officer',
     type: 'Salaried',
-    payRate: 40000,
+    payRate: 20000,
     contact: {
       firstName: 'Gurjit',
       lastName: 'Singh',
@@ -72,7 +73,7 @@ export const seedEmployees = [
       postalCode: 'S4N 1P4',
       street: '69 Cavendish St.',
     },
-    payroll: {},
+    payroll: {}, // Only for Hourly Employees
   },
   {
     id: 103,
@@ -125,7 +126,7 @@ export const seedEmployees = [
     id: 104,
     jobDescription: 'Chief Financial Officer',
     type: 'Salaried',
-    payRate: 25000,
+    payRate: 15000,
     contact: {
       firstName: 'Renoir',
       lastName: 'Brown',
@@ -199,8 +200,8 @@ export const seedEmployees = [
   {
     id: 106,
     jobDescription: 'Software Developer',
-    type: 'Hourly',
-    payRate: 35,
+    type: 'Salaried',
+    payRate: 6250,
     contact: {
       firstName: 'Arya',
       lastName: 'Stark',
@@ -213,25 +214,6 @@ export const seedEmployees = [
       postalCode: 'S6V 3P4',
       street: '102 Pine St.',
     },
-    payroll: {
-      '2023-01-30': {
-        monday: 8,
-        tuesday: 7,
-        wednesday: 8,
-        thursday: 9,
-        friday: 6,
-        saturday: 0,
-        sunday: 0,
-      },
-      '2023-02-06': {
-        monday: 8,
-        tuesday: 8,
-        wednesday: 8,
-        thursday: 9,
-        friday: 7,
-        saturday: 0,
-        sunday: 0,
-      },
-    },
+    payroll: {},
   },
 ]
