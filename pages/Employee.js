@@ -59,8 +59,7 @@ export default function Employee() {
               await localforage
                 .setItem(String(x.id), x)
                 .then((x) => setEmployee(x))
-            // .then((x) => console.log(`DB Seeding Done: ${x.id}`))
-            // .catch((x) => console.log(`DB Seeding Errors: ${x.id}`))
+                .then((x) => x)
           )
         ))
     })()
@@ -70,17 +69,18 @@ export default function Employee() {
     if (!router.isReady) {
       return
     }
-    // else if (employee.id === router.query.id){}
 
-    localforage
-      .keys()
-      .then((x) => setAllKeys(x))
-      .then(
-        () =>
-          router.query.hasOwnProperty('id') ||
-          gotoID(allKeys ? allKeys[0] : '101')
-      )
-    localforage.getItem(router.query.id).then((x) => setEmployee(x))
+    ;(async () => {
+      await localforage
+        .keys()
+        .then((x) => setAllKeys(x))
+        .then(
+          () =>
+            router.query.hasOwnProperty('id') ||
+            gotoID(allKeys ? allKeys[0] : '101')
+        )
+      await localforage.getItem(router.query.id).then((x) => setEmployee(x))
+    })()
   }, [router.isReady, router.query.id])
 
   useEffect(() => {
